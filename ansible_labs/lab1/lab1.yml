@@ -21,6 +21,7 @@
         enabled: yes
 
     - name: Create an index file using copy module
+      tags: copy
       copy:
         content: Hello World - New Version
         dest: /var/www/html/index.html

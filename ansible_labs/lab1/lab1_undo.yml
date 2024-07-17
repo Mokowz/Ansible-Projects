@@ -1,0 +1,21 @@
+---
+- name: Undo Everything Done in Lab1
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Delete the file
+      file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: Stop and disable Apache
+      service:
+        name: apache2
+        state: stopped
+        enabled: no
+
+    - name: Remove Apache
+      apt:
+        name: apache2
+        state: absent
