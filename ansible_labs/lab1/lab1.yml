@@ -20,9 +20,10 @@
         state: started
         enabled: yes
 
-    - name: Create a var index file
-      shell:
-        cmd: echo "Hey There" > /var/www/html/index.html
+    - name: Create an index file using copy module
+      copy:
+        content: Hello World - New Version
+        dest: /var/www/html/index.html
 
     - name: Reload Apache after changes
       shell:
