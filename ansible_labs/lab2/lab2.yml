@@ -13,3 +13,14 @@
         name: "{{ server }}"
         state: present
         update_cache: true
+
+    - name: Start and Enable Apache
+      service:
+        name: "{{ server }}"
+        state: started
+        enabled: true
+
+    - name: Edit index file
+      copy:
+        content: "Hey there! This is {{ server }}"
+        dest: /var/www/html/index.html
