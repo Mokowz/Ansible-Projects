@@ -1,0 +1,15 @@
+---
+- name: Check the importing of variables
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Debug to see if import was successful
+      debug:
+        msg: "Testing variables: {{ server }}"
+
+    - name: Install Apache
+      apt:
+        name: "{{ server }}"
+        state: present
+        update_cache: true
