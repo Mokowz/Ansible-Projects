@@ -1,0 +1,29 @@
+---
+- name: Manage Apache Service
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update the firewall rules
+      shell:
+        cmd: ufw allow 80 && ufw allow 443
+
+    - name: Ensure Apache is installed
+      apt:
+        name: apache2
+        state: present
+        update_cache: true
+
+    - name: Ensure Apache is started and enabled at system boot
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Create a var index file
+      shell:
+        cmd: echo "Hey There" > /var/www/html/index.html
+
+    - name: Reload Apache after changes
+      shell:
+        cmd: systemctl reload apache2

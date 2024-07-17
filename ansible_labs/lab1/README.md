@@ -1,7 +1,7 @@
 # Lab 1 Project
 
 ### List of tasks 
-- Install httpd
+- Install httpd (Apache)
 
 - Start httpd service
 - Enable httpd within firewall
