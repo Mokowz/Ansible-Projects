@@ -1,0 +1,76 @@
+---
+- name: Install Nginx
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Install Nginx
+    apt:
+      name: nginx
+      state: latest
+      update_cache: true
+
+  - name: Update the firewall
+    shell: |
+        ufw allow 'Nginx HTTP'
+        ufw status
+
+  - name: Test Nginx
+    shell:
+      cmd: nginx -t
+  
+  - name: Restart Nginx
+    service:
+      name: nginx
+      enabled: true
+      state: restarted
+
+- name: Configure Nginx (web servers)
+  hosts: web
+  tags: conf-nginx-servers
+  become: true
+
+  tasks:
+  - name: Debug Host Information
+    debug:
+      var: inventory_hostname
+      
+  - name: Edit the Index file
+    copy:
+      content: Hello There. We are the Legion
+      dest: /var/www/html/index.html
+
+  - name: Configure Nginx
+    copy:
+      src: ./nginx.conf
+      dest: /etc/nginx/sites-available/default
+
+  - name: Test Nginx
+    shell:
+      cmd: nginx -t
+  
+  - name: Restart Nginx
+    service:
+      name: nginx
+      enabled: true
+      state: restarted
+
+- name: Configure Nginx (load balancer)
+  hosts: lb
+  tags: lb
+  become: true
+
+  tasks:
+  - name: Configure Nginx
+    copy:
+      src: ./nginx-lb.conf
+      dest: /etc/nginx/sites-available/default
+
+  - name: Test Nginx
+    shell: |
+        nginx -t
+  
+  - name: Restart Nginx
+    service:
+      name: nginx
+      state: restarted
